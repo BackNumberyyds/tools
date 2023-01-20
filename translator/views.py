@@ -29,6 +29,8 @@ def index(request, word):
                 return "ad"
             case "noun":
                 return "n"
+            case "verb":
+                return "v"
             case "exclamation":
                 return "e"
             case _:
