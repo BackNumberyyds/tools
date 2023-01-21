@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 from lxml import html
 import requests
 
@@ -48,11 +47,13 @@ def index(request, word):
         plst = parts[p].xpath('./div[2]/div[2]/span/text()')
         for i in range(0, len(plst)):
             plst[i] = short(plst[i])
-        lst[p] += '/'.join(plst) + '. '
+        lst[-1] += '/'.join(plst) + '. '
         # 释义
         mlst = parts[p].xpath(
             './div[3]/div[contains(@class, "pr dsense")]/div[2]/div[@class="def-block ddef_block "]/div[3]/span/text()')
-        lst[p] += '；'.join(mlst)
+        if len(mlst) == 0:
+            lst.pop()
+        else:
+            lst[-1] += '；'.join(mlst)
 
-    # return render(request, 'index.html', context={'text': tree})
-    return HttpResponse('；'.join(lst))
+    return render(request, 'index.html', context={'text': '；'.join(lst)})
